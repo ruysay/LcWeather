@@ -24,9 +24,20 @@ class MainActivityPagerAdapter(fm: FragmentManager) :
      * Clear all fragments and create new ones with the stream URL
      * @param streams the video stream URLs
      */
-    fun setStreams(streams: String) {
+    fun setCities(cities: List<String>) {
         fragments.clear()
 
+        cities.forEachIndexed{ index, s ->
+            when(index) {
+                0 -> {
+                    fragments.add(LocationWeatherFragment(true))
+                }
+                else -> {
+                    fragments.add(LocationWeatherFragment())
+                }
+            }
+        }
+        notifyDataSetChanged()
 //        val fragment1 = MainVideoFragment()
 //        fragment1.arguments = createBundleStream(streams.screen1)
 //

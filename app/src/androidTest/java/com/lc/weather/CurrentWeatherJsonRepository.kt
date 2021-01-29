@@ -1,14 +1,13 @@
-package com.lc.carview
+package com.lc.weather
 
-import com.lc.carview.models.CarData
-import com.lc.carview.network.CarsRetrofitService
+import com.lc.weather.models.WeatherData
+import com.lc.weather.network.CurrentWeatherRetrofitService
 import retrofit2.Call
 
 /**
  * A proxy to test API which is served by MockServer
  */
-class JsonRepository(private val api: CarsRetrofitService) {
-    fun getValidCarList(): Call<List<CarData>> = api.getCars()
-    fun getEmptyCarList(): Call<List<CarData>> = api.getEmptyCars()
-    fun getInvalidCarList(): Call<List<CarData>> = api.getInvalidCars()
+class CurrentWeatherJsonRepository(private val api: CurrentWeatherRetrofitService) {
+    fun getCurrentWeather(): Call<WeatherData> = api.getCurrentWeather("")
+
 }

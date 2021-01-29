@@ -1,18 +1,17 @@
-package com.lc.carview.network
+package com.lc.weather.network
 
-import com.lc.carview.models.CarData
-import com.lc.weather.models.ForecastWeatherData
+import com.lc.weather.R
 import com.lc.weather.models.WeatherData
+import com.lc.weather.ui.WeatherRepository
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
-interface WeatherRetrofitService {
-    @GET("cars.json")
-    fun getCurrentWeather(): Call<WeatherData>
+interface CurrentWeatherRetrofitService {
+    @GET("weather?units=metric&appid=${WeatherRepository.API_KEY}")
+    fun getCurrentWeather(@Query("q") location: String?): Call<WeatherData>
 
 
-    @GET("cars.json")
-    fun getCurrentWeather(): Call<ForecastWeatherData>
 
 //    /**
 //     * Below are APIs not in use in normal flow

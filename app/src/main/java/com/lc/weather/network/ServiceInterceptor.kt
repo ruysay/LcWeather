@@ -1,4 +1,4 @@
-package com.lc.carview.network
+package com.lc.weather.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

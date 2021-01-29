@@ -1,13 +1,19 @@
-package com.lc.carview.network
+package com.lc.weather.network
 
+import com.lc.weather.R
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-val carRetrofitService by lazy {
-    RetrofitBuilder.createCarRetrofitService()
+val currentWeatherRetrofitService by lazy {
+    RetrofitBuilder.createCurrentRetrofitService()
+}
+
+val forecastRetrofitService by lazy {
+    RetrofitBuilder.createForecastRetrofitService()
 }
 
 /*
@@ -25,15 +31,22 @@ class RetrofitBuilder {
             // Set timeout before building it
             return Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient.build())
                 .build()
         }
 
-        fun createCarRetrofitService(): CarsRetrofitService {
-            val baseUrl = "https://afterpay-mobile-interview.s3.amazonaws.com/"
+        fun createCurrentRetrofitService(): CurrentWeatherRetrofitService {
+            val baseUrl = "https://api.openweathermap.org/data/2.5/"
             //create retrofit service with 60 sec timeout
-            return createCloudBuild(baseUrl, 60).create(CarsRetrofitService::class.java)
+            return createCloudBuild(baseUrl, 60).create(CurrentWeatherRetrofitService::class.java)
+        }
+
+        fun createForecastRetrofitService(): ForecastWeatherRetrofitService {
+            val baseUrl = "https://api.openweathermap.org/data/2.5/"
+            //create retrofit service with 60 sec timeout
+            return createCloudBuild(baseUrl, 60).create(ForecastWeatherRetrofitService::class.java)
         }
     }
 }

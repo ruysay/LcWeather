@@ -1,341 +1,43 @@
-[
-    {
-        "make": {
-            "manufacturer": "Honda",
-            "model": "Civic"
-        },
-        "color": "Red",
-        "year": 2019,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 130
-        },
-        "origin": "Japan",
-        "mpg": 19,
-        "image": "images/honda_civic_1.jpg",
-        "price": 17500
+{
+    "coord": {
+        "lon": 115.8333,
+        "lat": -31.9333
     },
-    {
-        "make": {
-            "manufacturer": "BMW",
-            "model": "X7"
-        },
-        "color": "Black",
-        "year": 2020,
-        "configuration": {
-            "body": "Coupe",
-            "cylinders": 6,
-            "horsepower": 240
-        },
-        "origin": "Germany",
-        "mpg": 25,
-        "image": "images/bmw_x7_1.jpg",
-        "price": 47000
+    "weather": [
+        {
+            "id": 800,
+            "main": "Clear",
+            "description": "clear sky",
+            "icon": "01d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 20.22,
+        "feels_like": 13.39,
+        "temp_min": 19.44,
+        "temp_max": 21.11,
+        "pressure": 1015,
+        "humidity": 56
     },
-    {
-        "make": {
-            "manufacturer": "Hyundai",
-            "model": "Atos Prime"
-        },
-        "color": "Blue",
-        "year": 2010,
-        "configuration": {
-            "body": "Hatchback",
-            "cylinders": 4,
-            "horsepower": 100
-        },
-        "origin": "Korea",
-        "mpg": 25,
-        "image": "images/hyundai_atos_prime_1.jpg",
-        "price": 9000
+    "visibility": 10000,
+    "wind": {
+        "speed": 10.29,
+        "deg": 110
     },
-    {
-        "make": {
-            "manufacturer": "Volkswagen",
-            "model": "Touareg"
-        },
-        "color": "Grey",
-        "year": 2018,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 230
-        },
-        "origin": "Germany",
-        "mpg": 15,
-        "image": "images/volkswagen_touareg_1.jpg",
-        "price": 30000
+    "clouds": {
+        "all": 0
     },
-    {
-        "make": {
-            "manufacturer": "Jaguar",
-            "model": "XE"
-        },
-        "color": "Red",
-        "year": 2020,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 200
-        },
-        "origin": "Germany",
-        "mpg": 12,
-        "image": "images/jaguar_xe_1.jpg",
-        "price": 55000
+    "dt": 1611876511,
+    "sys": {
+        "type": 1,
+        "id": 9586,
+        "country": "AU",
+        "sunrise": 1611869930,
+        "sunset": 1611919229
     },
-    {
-        "make": {
-            "manufacturer": "Nissan",
-            "model": "Almera"
-        },
-        "color": "White",
-        "year": 2017,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 75
-        },
-        "origin": "Japan",
-        "mpg": 18,
-        "image": "images/nissan_almera_1.jpg",
-        "price": 18750
-    },
-    {
-        "make": {
-            "manufacturer": "Toyota",
-            "model": "Camry"
-        },
-        "color": "White",
-        "year": 2020,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 6,
-            "horsepower": 203
-        },
-        "origin": "Japan",
-        "mpg": 19,
-        "image": "images/toyota_camry_1.jpg",
-        "price": 31000
-    },
-    {
-        "make": {
-            "manufacturer": "Chevrolet",
-            "model": "Corvette"
-        },
-        "color": "Red",
-        "year": 2020,
-        "configuration": {
-            "body": "Coupe",
-            "cylinders": 8,
-            "horsepower": 300
-        },
-        "origin": "USA",
-        "mpg": 19,
-        "image": "images/chevrolet_corvette_1.jpg",
-        "price": 106000
-    },
-    {
-        "make": {
-            "manufacturer": "Honda",
-            "model": "CR-V"
-        },
-        "color": "Black",
-        "year": 2020,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 150
-        },
-        "origin": "Japan",
-        "mpg": 20,
-        "image": "images/honda_crv_1.jpg",
-        "price": 27500
-    },
-    {
-        "make": {
-            "manufacturer": "Toyota",
-            "model": "Avensis"
-        },
-        "color": "Black",
-        "year": 2014,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 120
-        },
-        "origin": "Japan",
-        "mpg": 18,
-        "image": "images/toyota_avensis_1.jpg",
-        "price": 17000
-    },
-    {
-        "make": {
-            "manufacturer": "BMW",
-            "model": "X6"
-        },
-        "color": "Black",
-        "year": 2020,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 300
-        },
-        "origin": "Germany",
-        "mpg": 23,
-        "image": "images/bmw_x6_1.jpg",
-        "price": 75000
-    },
-    {
-        "make": {
-            "manufacturer": "Nissan",
-            "model": "Murano"
-        },
-        "color": "White",
-        "year": 2012,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 155
-        },
-        "origin": "Japan",
-        "mpg": 15,
-        "image": "images/nissan_murano_1.jpg",
-        "price": 15000
-    },
-    {
-        "make": {
-            "manufacturer": "Hyundai",
-            "model": "Sonata"
-        },
-        "color": "Blue",
-        "year": 2018,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 178
-        },
-        "origin": "Japan",
-        "mpg": 25,
-        "image": "images/hyundai_sonata_1.jpg",
-        "price": 24000
-    },
-    {
-        "make": {
-            "manufacturer": "Infiniti",
-            "model": "QX80"
-        },
-        "color": "Gold",
-        "year": 2020,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 8,
-            "horsepower": 240
-        },
-        "origin": "Japan",
-        "mpg": 21,
-        "image": "images/infiniti_qx80_1.jpg",
-        "price": 48000
-    },
-    {
-        "make": {
-            "manufacturer": "Jaguar",
-            "model": "XKR"
-        },
-        "color": "Red",
-        "year": 2018,
-        "configuration": {
-            "body": "Coupe",
-            "cylinders": 6,
-            "horsepower": 270
-        },
-        "origin": "India",
-        "mpg": 24,
-        "image": "images/jaguar_xkr_1.jpg",
-        "price": 53000
-    },
-    {
-        "make": {
-            "manufacturer": "Chevrolet",
-            "model": "Equinox"
-        },
-        "color": "Black",
-        "year": 2020,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 203
-        },
-        "origin": "Germany",
-        "mpg": 19,
-        "image": "images/chevrolet_equinox_1.jpg",
-        "price": 44300
-    },
-    {
-        "make": {
-            "manufacturer": "Volkswagen",
-            "model": "Bora"
-        },
-        "color": "Black",
-        "year": 2016,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 4,
-            "horsepower": 159
-        },
-        "origin": "Germany",
-        "mpg": 15,
-        "price": 15400
-    },
-    {
-        "make": {
-            "manufacturer": "Lexus",
-            "model": "LX"
-        },
-        "color": "Grey",
-        "year": 2015,
-        "configuration": {
-            "body": "SUV",
-            "cylinders": 6,
-            "horsepower": 210
-        },
-        "origin": "Korea",
-        "mpg": 14,
-        "image": "images/lexus_lx_1.jpg",
-        "price": 21200
-    },
-    {
-        "make": {
-            "manufacturer": "Audi",
-            "model": "A5"
-        },
-        "color": "Blue",
-        "year": 2020,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 8,
-            "horsepower": 230
-        },
-        "origin": "Germany",
-        "mpg": 17,
-        "image": "images/audi_a5_1.jpg",
-        "price": 41000
-    },
-    {
-        "make": {
-            "manufacturer": "Lexus",
-            "model": "RX 300"
-        },
-        "color": "Black",
-        "year": 2013,
-        "configuration": {
-            "body": "Saloon",
-            "cylinders": 6,
-            "horsepower": 180
-        },
-        "origin": "Korea",
-        "mpg": 19,
-        "image": "images/lexus_rx300_1.jpg",
-        "price": 24300
-    }
-]
+    "timezone": 28800,
+    "id": 2063523,
+    "name": "Perth",
+    "cod": 200
+}

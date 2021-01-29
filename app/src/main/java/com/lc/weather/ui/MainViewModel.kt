@@ -1,28 +1,26 @@
-package com.lc.carview.ui
+package com.lc.weather.ui
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lc.carview.models.CarData
-import com.lc.carview.enums.LoadStates
+import com.lc.weather.models.WeatherUiModel
 
 class MainViewModel : ViewModel() {
-    private val repository = MainRepository
+    private val repository = WeatherRepository
 
     fun init(context: Context) {
-        repository.init(context)
+        repository.init()
     }
 
-    fun getCars(): LiveData<List<CarData>> {
-        return repository.getCars()
+    fun getWeather(query: String): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+        return repository.getWeather(query)
     }
 
-    fun setCars(cars: MutableList<CarData>? = getCars().value?.toMutableList()) {
-        repository.setCarData(cars)
-    }
-
-    fun getLoadState(): MutableLiveData<LoadStates> {
-        return repository.getLoadState()
-    }
+//    fun getCurrentWeather(query: String): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+//        return repository.getCurrentWeather(query)
+//    }
+//
+//    fun getForecastWeather(): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+//        return repository.getForecastWeather()
+//    }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ * Developed by Lawrence Chiang and Steven Lee
+  ~ * Copyright © 2020 Swann Communications. All rights reserved.
+  ~ * Last modified Steven 30/04/20 4:26 PM
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp"
+    android:shape="rectangle">
+    <!-- you can use any color you want I used here gray color-->
+<!--    <solid android:color="@color/transparent"/>-->
+    <gradient
+        android:angle="0"
+        android:endColor="@color/main_blue"
+        android:startColor="@color/light_blue"
+        android:type="linear" />
+    <corners android:radius="18dp" />
+</shape>

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextXLarge"
-        android:text="19&#xb0;"
+        android:text="--"
         android:gravity="center"
         android:layout_marginTop="@dimen/margin_large"
         app:layout_constraintTop_toBottomOf="@id/weather_location_name"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextSubtitle"
-        android:text="26&#xb0; / 16&#xb0;"
+        android:text="-- / --"
         android:layout_marginTop="@dimen/margin_large"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/weather_current_temp"/>
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextSubtitle"
-        android:text="Clear"
+        android:text="--"
         android:layout_marginTop="@dimen/margin_large"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/weather_temp_range"/>
@@ -53,6 +53,11 @@
         android:layout_marginTop="@dimen/margin_large"
         app:layout_constraintTop_toBottomOf="@id/weather_condition"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/view_holder_weather_forecast_list"/>
+        tools:listitem="@layout/view_holder_weather_forecast_list"
+        android:divider="@android:color/transparent"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:padding="@dimen/margin_medium"
+        android:dividerHeight="@dimen/margin_medium"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

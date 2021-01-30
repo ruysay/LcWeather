@@ -44,6 +44,6 @@
     <dimen name="logo_width">150dp</dimen>
 
     <dimen name="weather_forecast_item_height">100dp</dimen>
-    <dimen name="weather_forecast_icon_height">80dp</dimen>
-    <dimen name="weather_forecast_icon_width">80dp</dimen>
+    <dimen name="weather_forecast_icon_height">60dp</dimen>
+    <dimen name="weather_forecast_icon_width">60dp</dimen>
 </resources>

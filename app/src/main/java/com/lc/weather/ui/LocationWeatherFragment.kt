@@ -3,10 +3,12 @@ package com.lc.weather.ui
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,12 +19,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYouListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.lc.weather.BuildConfig
 import com.lc.weather.LcWeatherApplication
 import com.lc.weather.R
 import com.lc.weather.models.WeatherUiModel
+import com.lc.weather.utils.ConditionIconUtil
 import kotlinx.android.synthetic.main.fragment_weather.*
 import timber.log.Timber
 import java.text.DateFormat
@@ -61,8 +67,7 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_weather, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -231,6 +236,8 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
         private val simpleDateFormat = SimpleDateFormat("EEEE, d MMM", Locale.getDefault())
 
+//        private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+
         override fun getCount(): Int {
             return dataSource.size
         }
@@ -276,8 +283,34 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
             tempRangeTxt.text = view.context.getString(R.string.temp_range, weatherData.tempMax?.toInt(), weatherData.tempMin?.toInt() )
 
-            val imgUrl = "http://openweathermap.org/img/w/${weatherData.icon}.png"
-            LcWeatherApplication.picassoWithCache?.load(imgUrl)?.placeholder(R.drawable.gray_background)?.fit()?.into(conditionIcon)
+//            val imgUrl = Uri.parse("http://openweathermap.org/img/w/${weatherData.icon}.png")
+//            val imgUrl = Uri.parse("https://upload.wikimedia.org/wikipedia/commons/b/bd/Test.svg")
+
+            val imgUrl = Uri.parse("android.resource://${LcWeatherApplication.getContext().packageName}/drawable/ic_unavailable")
+
+            conditionIcon.setImageResource(ConditionIconUtil.getDrawable(weatherData.icon!!))
+//            Timber.d("checkImg: $imgUrl")
+//            val imgUrl = ConditionIconUtil.getDrawable(weatherData.icon!!)
+
+//            LcWeatherApplication.picassoWithCache?.load(R.drawable.a01n_svg)?.placeholder(R.drawable.progress_animation)?.fit()?.into(conditionIcon)
+
+//            Glide.with(view.context).load(R.drawable.a01n_svg).apply(requestOptions).placeholder(R.drawable.progress_animation).into(conditionIcon)
+
+//            GlideToVectorYou
+//                .init()
+//                .with(view.context)
+//                .withListener(object: GlideToVectorYouListener {
+//                    override fun onLoadFailed() {
+////                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                    }
+//
+//                    override fun onResourceReady() {
+////                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                    }
+//                })
+//                .setPlaceHolder(R.drawable.progress_animation, R.drawable.ic_launcher_background)
+//                .load(imgUrl, conditionIcon);
+
             return view
         }
 

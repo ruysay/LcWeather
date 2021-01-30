@@ -79,6 +79,13 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         listView.adapter = adapter
 
 
+        weather_layout_background.setImageResource(when(city) {
+            "Sydney" -> {R.drawable.photo_sydney}
+            "Perth" -> {R.drawable.photo_perth}
+            "Hobart" -> {R.drawable.photo_hobart}
+            else -> R.drawable.photo_home
+        })
+
         mainViewModel.getWeatherList().observe(viewLifecycleOwner, Observer {result ->
             Timber.d("checkWeather getWeatherList $city: ${result[city]?.size}")
 //                adapter.setList(result[city]?.toMutableList()?.subList(1,4))

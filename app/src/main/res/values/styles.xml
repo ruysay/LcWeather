@@ -24,6 +24,43 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- Custom AlertDialogs -->
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogTheme.ButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogTheme.ButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AlertDialogTheme.ButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogTheme.StrongNegative" parent="AlertDialogTheme">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogTheme.StrongNegative.ButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogTheme.Neutral.ButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogTheme.StrongPositive" parent="AlertDialogTheme">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogTheme.StrongPositive.ButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogTheme.Neutral.ButtonStyle</item>
+    </style>
+
+    <!-- Custom AlertDialogs Button -->
+    <style name="AlertDialogTheme.ButtonStyle" parent="Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AlertDialogTheme.StrongPositive.ButtonStyle" parent="Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:textColor">@color/main_blue</item>
+    </style>
+
+    <style name="AlertDialogTheme.StrongNegative.ButtonStyle" parent="Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:textColor">@color/red_bg</item>
+    </style>
+
+    <style name="AlertDialogTheme.Neutral.ButtonStyle" parent="Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:fontFamily">@font/d_din</item>
+        <item name="android:textColor">@color/text_normal</item>
+    </style>
 
     <style name="AdapterItemTitle">
         <item name="android:textColor">@color/black</item>

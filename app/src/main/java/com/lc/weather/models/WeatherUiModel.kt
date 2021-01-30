@@ -9,7 +9,8 @@ data class WeatherUiModel(
     var temp: Double?,
     var tempMin: Double?,
     var tempMax: Double?,
-    var time: Int?
+    var time: Int?,
+    var icon: String?
 ) : Parcelable
 
 

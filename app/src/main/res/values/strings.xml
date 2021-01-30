@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LcWeather</string>
+    <string name="common_confirm">Ok</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="location_permission_alert_title">Location Permission</string>
+    <string name="location_permission_alert_message">To enable full functions of this app, we need to access this device\'s location</string>
+    <string name="temp_range">%d&#xb0; / %d&#xb0;</string>
 </resources>

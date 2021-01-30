@@ -23,13 +23,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.lc.weather.LcWeatherApplication
 import com.lc.weather.R
 import com.lc.weather.models.WeatherUiModel
+import kotlinx.android.synthetic.main.fragment_weather.*
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) : Fragment(),
+class LocationWeatherFragment(private var city: String? = null) : Fragment(),
     LocationListener {
 
     companion object {
@@ -72,12 +73,30 @@ class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) :
         listView = view.findViewById<ListView>(R.id.weather_3days_forecast)
         listView.adapter = adapter
 
-        mainViewModel.getWeather("melbourne,au").observe(viewLifecycleOwner, Observer {
-            Timber.d("checkWeather observed: ${it["melbourne,au"]?.size}")
-            adapter.setList(it["melbourne,au"]?.toMutableList())
-        })
 
-        Timber.d("useCurrentLocation: $useCurrentLocation")
+        mainViewModel.getWeatherList().observe(viewLifecycleOwner, Observer {result ->
+            Timber.d("checkWeather getWeatherList $city: ${result[city]?.size}")
+//                adapter.setList(result[city]?.toMutableList()?.subList(1,4))
+//
+//                result[city]?.get(0)?.let { weather ->
+//                    weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
+//                    weather_condition.text = weather.condition
+//                }
+            activity?.runOnUiThread {
+                result[city]?.toMutableList()?.let { list ->
+                    list[0].let { weather ->
+                        weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
+                        weather_condition.text = weather.condition
+                        weather_current_temp.text = getString(R.string.temp_now, weather.temp?.toInt())
+                    }
+
+                    if(list.size > 4) {
+                        adapter.setList(list.subList(1,4))
+                    }
+                }
+                weather_location_name.text = city
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -95,16 +114,16 @@ class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) :
 
     override fun onResume() {
         super.onResume()
-
+        Timber.d("onResume: $city")
         val context = this.context ?: return
-        if (!haveSetUI) {
+        if (!haveSetUI && city == null) {
             haveSetUI = true
             if (ContextCompat.checkSelfPermission(
                     context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) || !haveAskedPermission) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) || !haveAskedPermission) {
                     haveAskedPermission = true
                     showPermissionDialog(context)
                 }
@@ -113,6 +132,7 @@ class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) :
                 checkLastKnownLocation()
             }
         }
+        if(city!= null) mainViewModel.getWeather(city!!)
     }
 
     private fun showPermissionDialog(context: Context) {
@@ -121,7 +141,7 @@ class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) :
         dialog.setMessage(R.string.location_permission_alert_message)
         dialog.setPositiveButton(R.string.common_confirm) { _, _ ->
             requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 LOCATION_PERMISSION_REQUEST_CODE
             )
         }
@@ -273,12 +293,25 @@ class LocationWeatherFragment(private val useCurrentLocation: Boolean = false) :
         val locationInfo = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
         locationInfo?.let {
             if(it.size > 0) {
-                val city = it[0].locality
+                val city = "${it[0].locality},${it[0].countryName}"
                 Timber.d("checkWeather - updateLocation: let's get weather with latlng: $city")
-
+                this.city = city
+                mainViewModel.getWeather(city)
+//                mainViewModel.getWeather(city).observe(viewLifecycleOwner, Observer { result ->
+//                    Timber.d("checkWeather observed: ${result[city]?.size}")
+//
+//                    result[city]?.toMutableList()?.let { list ->
+//                        if(list.size > 4) {
+//                            adapter.setList(list.subList(1,4))
+//                            list[0].let { weather ->
+//                                weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
+//                                weather_condition.text = weather.condition
+//                            }
+//                        }
+//                    }
+//                })
             }
         }
-        Timber.d("checkWeather - updateLocation: let's get weather with latlng")
     }
 
     override fun onLocationChanged(location: Location) {

@@ -27,13 +27,13 @@ class MainActivityPagerAdapter(fm: FragmentManager) :
     fun setCities(cities: List<String>) {
         fragments.clear()
 
-        cities.forEachIndexed{ index, s ->
+        cities.forEachIndexed{ index, city ->
             when(index) {
                 0 -> {
-                    fragments.add(LocationWeatherFragment(true))
+                    fragments.add(LocationWeatherFragment(null))
                 }
                 else -> {
-                    fragments.add(LocationWeatherFragment())
+                    fragments.add(LocationWeatherFragment(city))
                 }
             }
         }

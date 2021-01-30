@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextSubtitle"
-        android:text="Melbourne"
         android:layout_marginTop="@dimen/margin_large"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"

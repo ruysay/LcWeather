@@ -11,6 +11,8 @@ interface CurrentWeatherRetrofitService {
     @GET("weather?units=metric&appid=${WeatherRepository.API_KEY}")
     fun getCurrentWeather(@Query("q") location: String?): Call<WeatherData>
 
+    @GET("weather?units=metric&appid=${WeatherRepository.API_KEY}")
+    fun getCurrentWeather(@Query("lat") lat: Double?, @Query("lon") lon: Double?): Call<WeatherData>
 
 
 //    /**

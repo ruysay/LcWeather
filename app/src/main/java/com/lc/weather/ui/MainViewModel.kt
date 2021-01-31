@@ -2,15 +2,17 @@ package com.lc.weather.ui
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.lc.weather.enums.LoadStates
 import com.lc.weather.models.WeatherUiModel
 
 class MainViewModel : ViewModel() {
     private val repository = WeatherRepository
 
     fun init(context: Context) {
-        repository.init()
+        repository.init(context)
     }
 
     fun getWeather(query: String): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
@@ -21,15 +23,8 @@ class MainViewModel : ViewModel() {
         return repository.getWeatherList()
     }
 
-    fun getWeather(latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
-        return repository.getWeather(latLng)
+    fun getLoadState(): MutableLiveData<LoadStates> {
+        return repository.getLoadState()
     }
 
-//    fun getCurrentWeather(query: String): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
-//        return repository.getCurrentWeather(query)
-//    }
-//
-//    fun getForecastWeather(): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
-//        return repository.getForecastWeather()
-//    }
 }

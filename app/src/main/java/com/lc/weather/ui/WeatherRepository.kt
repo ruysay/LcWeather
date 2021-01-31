@@ -1,8 +1,11 @@
 package com.lc.weather.ui
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
+import com.lc.weather.enums.LoadStates
 import com.lc.weather.models.Daily
 import com.lc.weather.network.currentWeatherRetrofitService
 import com.lc.weather.models.WeatherData
@@ -28,7 +31,15 @@ object WeatherRepository {
 
     private lateinit var disposable: Disposable
 
-    fun init() {
+    private val loadState = MutableLiveData<LoadStates>(LoadStates.START)
+    private var context: Context? = null
+
+    private val activity: Activity? by lazy {
+        context as? Activity
+    }
+
+    fun init(context: Context) {
+        this.context = context
     }
 
     fun getWeather(latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
@@ -112,17 +123,19 @@ object WeatherRepository {
             .enqueue(object : Callback<WeatherData> {
                 override fun onFailure(call: Call<WeatherData>, t: Throwable) {
                     Timber.d("getWeather - onFailure")
+                    setLoadState(LoadStates.ERROR)
                 }
 
                 override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
                     Timber.d("getWeather $query- onResponse: ${response.body()}")
 
-                    //TODO parse response and save to cache
+                    //parse response and save to cache
                     if (response.isSuccessful) {
                         response.body()?.let {
                             val isNewData = cachedWeather[query] == null
 
                             if (isNewData) {
+                                setLoadState(LoadStates.LOADING)
                                 cachedWeather[query] = mutableListOf()
                                 cachedWeather[query]?.add(0, transform(it))
                             } else {
@@ -161,6 +174,7 @@ object WeatherRepository {
                                     }
 
                                     Timber.d("getWeather step 2 -  ${cachedWeather[query]?.size}")
+                                    setLoadState(LoadStates.SUCCESS)
                                     setWeatherData(cachedWeather)
                                     if (!disposable.isDisposed) {
                                         disposable.dispose()
@@ -182,6 +196,21 @@ object WeatherRepository {
         this.cache.value = weathers
     }
 
+    /**
+     * Provide live data of load state for observers
+     */
+    fun getLoadState(): MutableLiveData<LoadStates> {
+        return loadState
+    }
+
+    /**
+     * Checks if the activity is still active, and run the state changes in the UI thread.
+     */
+    private fun setLoadState(loadState: LoadStates) {
+        activity?.runOnUiThread {
+            this.loadState.value = loadState
+        }
+    }
 
     fun transform(data: WeatherData): WeatherUiModel {
         return WeatherUiModel(

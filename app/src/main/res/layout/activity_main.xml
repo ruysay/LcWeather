@@ -8,17 +8,6 @@
     android:background="@android:color/black"
     android:id="@+id/main_container">
 
-    <ProgressBar
-        android:id="@+id/main_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        />
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
@@ -27,16 +16,6 @@
         >
 
     </androidx.viewpager.widget.ViewPager>
-
-    <ImageView
-        android:id="@+id/main_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/main_video_control"

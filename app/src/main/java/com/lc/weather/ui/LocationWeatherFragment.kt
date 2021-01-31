@@ -12,6 +12,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -27,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.lc.weather.BuildConfig
 import com.lc.weather.LcWeatherApplication
 import com.lc.weather.R
+import com.lc.weather.enums.LoadStates
 import com.lc.weather.models.WeatherUiModel
 import com.lc.weather.utils.ConditionIconUtil
 import kotlinx.android.synthetic.main.fragment_weather.*
@@ -86,15 +89,31 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
             else -> R.drawable.photo_home
         })
 
+        mainViewModel.getLoadState().observe(viewLifecycleOwner, Observer { loadState ->
+            when (loadState) {
+                LoadStates.START, LoadStates.LOADING -> {
+                    main_progress_bar.visibility = VISIBLE
+                }
+                LoadStates.SUCCESS -> {
+                    main_progress_bar.visibility = GONE
+                }
+                LoadStates.ERROR -> {
+                    main_progress_bar.visibility = GONE
+                    Toast.makeText(context, R.string.msg_load_failed , Toast.LENGTH_LONG).show()
+                }
+                LoadStates.EMPTY -> {
+                    main_progress_bar.visibility = GONE
+                    Toast.makeText(context, R.string.msg_load_empty_result , Toast.LENGTH_LONG).show()
+
+                }
+                else -> {}
+            }
+        })
+
         mainViewModel.getWeatherList().observe(viewLifecycleOwner, Observer {result ->
             Timber.d("checkWeather getWeatherList $city: ${result[city]?.size}")
-//                adapter.setList(result[city]?.toMutableList()?.subList(1,4))
-//
-//                result[city]?.get(0)?.let { weather ->
-//                    weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
-//                    weather_condition.text = weather.condition
-//                }
             activity?.runOnUiThread {
+                main_progress_bar.visibility = GONE
                 result[city]?.toMutableList()?.let { list ->
                     list[0].let { weather ->
                         weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())

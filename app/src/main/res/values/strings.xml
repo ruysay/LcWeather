@@ -6,4 +6,8 @@
     <string name="location_permission_alert_message">To enable full functions of this app, we need to access this device\'s location</string>
     <string name="temp_range">%d&#xb0; / %d&#xb0;</string>
     <string name="temp_now">%d&#xb0;</string>
+    <string name="msg_loading_data">Loading Data</string>
+    <string name="msg_load_complete">Load Data Complete</string>
+    <string name="msg_load_failed">Load Data Failed</string>
+    <string name="msg_load_empty_result">Empty Data List</string>
 </resources>

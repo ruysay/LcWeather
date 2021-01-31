@@ -67,7 +67,7 @@ class RetrofitBuilder {
         }
 
         fun createWeatherBitRetrofitService(): WeatherBitRetrofitService {
-            val baseUrl = "https://weatherbit-v1-mashape.p.rapidapi.com/"
+            val baseUrl = "https://api.weatherbit.io/v2.0/"
             //create retrofit service with 60 sec timeout
             return createWeatherBitCloudBuild(baseUrl, 60).create(WeatherBitRetrofitService::class.java)
         }

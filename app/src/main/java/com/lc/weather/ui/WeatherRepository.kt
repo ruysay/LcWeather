@@ -25,10 +25,8 @@ object WeatherRepository {
     private val cachedLongForecast = HashMap<String, MutableList<WeatherUiModel>>()
     private val longForecastCache = MutableLiveData<HashMap<String, MutableList<WeatherUiModel>>>()
 
-
-    const val OPEN_WEATHER_API_KEY = "4b9db7aefc049226b4a23f16724554eb" //R.string.open_weather_api_key
-    const val WEATHER_BIT_API_KEY = "e1c9d4dd5cmsh84baf6f21cf038cp115024jsn864c46be15e5"
-    const val WEATHER_BIT_HOST = "weatherbit-v1-mashape.p.rapidapi.com"
+    const val OPEN_WEATHER_API_KEY = "4b9db7aefc049226b4a23f16724554eb"
+    const val WEATHER_BIT_API_KEY = "0de226a6e15f4936bc4e8b2bb749c543"
 
     private lateinit var disposable: Disposable
 
@@ -41,78 +39,6 @@ object WeatherRepository {
 
     fun init(context: Context) {
         this.context = context
-    }
-
-    fun getWeather(latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
-        currentWeatherRetrofitService.getCurrentWeather(latLng.latitude, latLng.longitude)
-            .enqueue(object : Callback<WeatherData> {
-                override fun onFailure(call: Call<WeatherData>, t: Throwable) {
-                    Timber.d("getWeatherLatLng - onFailure")
-                }
-
-                override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
-                    Timber.d("getWeatherLatLng - onResponse: ${response.body()}")
-
-                    //TODO parse response and save to cache
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            val isNewData = cachedWeather[latLng.toString()] == null
-                            val query = latLng.toString()
-                            if (isNewData) {
-                                cachedWeather[query] = mutableListOf()
-                                cachedWeather[query]?.add(0, transform(it))
-                            } else {
-                                cachedWeather[query]?.set(0, transform(it))
-                            }
-
-                            Timber.d("getWeatherLatLng step 1 -  ${cachedWeather.size}")
-                            //get 7 day forecast with the latLng in response
-                            disposable = forecastRetrofitService.getRxForecastWeather(
-                                it.coord.lat,
-                                it.coord.lon
-                            )
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe({ result ->
-                                    //TODO update cache here
-                                    //set cache to notify observer data change
-                                    Timber.d("getWeatherLatLng - $result")
-                                    result.daily.mapIndexed { index, daily ->
-                                        when (index) {
-                                            0 -> {
-                                            } // we already have data from get current weather API so ignore.
-                                            else -> {
-                                                if (isNewData) {
-                                                    cachedWeather[query]?.add(
-                                                        index,
-                                                        transform(daily)
-                                                    )
-                                                } else {
-                                                    cachedWeather[query]?.set(
-                                                        index,
-                                                        transform(daily)
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    Timber.d("getWeatherLatLng step 2 -  ${cachedWeather[query]?.size}")
-                                    setWeatherData(cachedWeather)
-                                    if (!disposable.isDisposed) {
-                                        disposable.dispose()
-                                    }
-                                }, {
-                                    Timber.e(it)
-                                    if (!disposable.isDisposed) {
-                                        disposable.dispose()
-                                    }
-                                })
-                        }
-                    }
-                }
-            })
-        return cache
     }
 
     fun getWeatherList(): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
@@ -214,19 +140,6 @@ object WeatherRepository {
                         cachedLongForecast[city]?.add(
                             transform(daily)
                         )
-
-//                        if (isNewData) {
-//                            cachedLongForecast[city] = mutableListOf()
-//                            cachedLongForecast[city]?.add(
-//                                index,
-//                                transform(daily)
-//                            )
-//                        } else {
-//                            cachedLongForecast[city]?.set(
-//                                index,
-//                                transform(daily)
-//                            )
-//                        }
                     }
 
                     Timber.d("checkLongDurationForecast step 2 -  ${cachedLongForecast[city]?.size}")
@@ -237,6 +150,78 @@ object WeatherRepository {
         return longForecastCache
     }
 
+
+    fun getWeather(latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+        currentWeatherRetrofitService.getCurrentWeather(latLng.latitude, latLng.longitude)
+            .enqueue(object : Callback<WeatherData> {
+                override fun onFailure(call: Call<WeatherData>, t: Throwable) {
+                    Timber.d("getWeatherLatLng - onFailure")
+                }
+
+                override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+                    Timber.d("getWeatherLatLng - onResponse: ${response.body()}")
+
+                    //TODO parse response and save to cache
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            val isNewData = cachedWeather[latLng.toString()] == null
+                            val query = latLng.toString()
+                            if (isNewData) {
+                                cachedWeather[query] = mutableListOf()
+                                cachedWeather[query]?.add(0, transform(it))
+                            } else {
+                                cachedWeather[query]?.set(0, transform(it))
+                            }
+
+                            Timber.d("getWeatherLatLng step 1 -  ${cachedWeather.size}")
+                            //get 7 day forecast with the latLng in response
+                            disposable = forecastRetrofitService.getRxForecastWeather(
+                                it.coord.lat,
+                                it.coord.lon
+                            )
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe({ result ->
+                                    //TODO update cache here
+                                    //set cache to notify observer data change
+                                    Timber.d("getWeatherLatLng - $result")
+                                    result.daily.mapIndexed { index, daily ->
+                                        when (index) {
+                                            0 -> {
+                                            } // we already have data from get current weather API so ignore.
+                                            else -> {
+                                                if (isNewData) {
+                                                    cachedWeather[query]?.add(
+                                                        index,
+                                                        transform(daily)
+                                                    )
+                                                } else {
+                                                    cachedWeather[query]?.set(
+                                                        index,
+                                                        transform(daily)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    Timber.d("getWeatherLatLng step 2 -  ${cachedWeather[query]?.size}")
+                                    setWeatherData(cachedWeather)
+                                    if (!disposable.isDisposed) {
+                                        disposable.dispose()
+                                    }
+                                }, {
+                                    Timber.e(it)
+                                    if (!disposable.isDisposed) {
+                                        disposable.dispose()
+                                    }
+                                })
+                        }
+                    }
+                }
+            })
+        return cache
+    }
 
     fun setWeatherData(weathers: HashMap<String, MutableList<WeatherUiModel>>) {
         this.cache.value = weathers

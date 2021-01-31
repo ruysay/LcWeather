@@ -20,6 +20,12 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextTitle" parent="AppTheme">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:fontFamily">@font/d_din_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@style/TextAppearance.AppCompat">
         <item name="android:textSize">@dimen/text_title</item>
         <item name="android:textColor">@color/black</item>
@@ -75,7 +81,7 @@
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:fontFamily">@font/d_din_bold</item>
-        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textSize">@dimen/text_medium</item>
     </style>
 
     <style name="AdapterItemText">

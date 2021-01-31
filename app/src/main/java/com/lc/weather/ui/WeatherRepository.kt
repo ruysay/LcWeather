@@ -6,14 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.lc.weather.enums.LoadStates
-import com.lc.weather.models.Daily
+import com.lc.weather.models.*
 import com.lc.weather.network.currentWeatherRetrofitService
-import com.lc.weather.models.WeatherData
-import com.lc.weather.models.WeatherUiModel
-//import com.google.android.gms.maps.model.LatLng
-import com.lc.weather.models.ForecastWeatherData
 import com.lc.weather.network.forecastRetrofitService
-import io.reactivex.Observable
+import com.lc.weather.network.weatherBitRetrofitService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -24,10 +20,15 @@ import timber.log.Timber
 
 object WeatherRepository {
     private val cache = MutableLiveData<HashMap<String, MutableList<WeatherUiModel>>>()
-
     private val cachedWeather = HashMap<String, MutableList<WeatherUiModel>>()
 
-    const val API_KEY = "4b9db7aefc049226b4a23f16724554eb" //R.string.open_weather_api_key
+    private val cachedLongForecast = HashMap<String, MutableList<WeatherUiModel>>()
+    private val longForecastCache = MutableLiveData<HashMap<String, MutableList<WeatherUiModel>>>()
+
+
+    const val OPEN_WEATHER_API_KEY = "4b9db7aefc049226b4a23f16724554eb" //R.string.open_weather_api_key
+    const val WEATHER_BIT_API_KEY = "e1c9d4dd5cmsh84baf6f21cf038cp115024jsn864c46be15e5"
+    const val WEATHER_BIT_HOST = "weatherbit-v1-mashape.p.rapidapi.com"
 
     private lateinit var disposable: Disposable
 
@@ -192,8 +193,57 @@ object WeatherRepository {
         return cache
     }
 
+    fun getLongDurationForecast(city: String, latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+        weatherBitRetrofitService.getForecastWeather(latLng.latitude, latLng.longitude)
+            .enqueue(object : Callback<WeatherBitForecastData> {
+                override fun onFailure(call: Call<WeatherBitForecastData>, t: Throwable) {
+                    Timber.d("checkLongDurationForecast - onFailure: $t")
+                }
+
+                override fun onResponse(
+                    call: Call<WeatherBitForecastData>,
+                    response: Response<WeatherBitForecastData>
+                ) {
+                    val isNewData = cachedLongForecast[city] == null
+                    if (isNewData) {
+                        cachedLongForecast[city] = mutableListOf()
+                    }
+                    Timber.d("checkLongDurationForecast - $city onResponse: ${response.body()}")
+                    response.body()?.data?.mapIndexed { index, daily ->
+                        Timber.d("checkLongDurationForecast: map $index")
+                        cachedLongForecast[city]?.add(
+                            transform(daily)
+                        )
+
+//                        if (isNewData) {
+//                            cachedLongForecast[city] = mutableListOf()
+//                            cachedLongForecast[city]?.add(
+//                                index,
+//                                transform(daily)
+//                            )
+//                        } else {
+//                            cachedLongForecast[city]?.set(
+//                                index,
+//                                transform(daily)
+//                            )
+//                        }
+                    }
+
+                    Timber.d("checkLongDurationForecast step 2 -  ${cachedLongForecast[city]?.size}")
+                    setLoadState(LoadStates.SUCCESS)
+                    setLongForecastWeatherData(cachedLongForecast)
+                }
+            })
+        return longForecastCache
+    }
+
+
     fun setWeatherData(weathers: HashMap<String, MutableList<WeatherUiModel>>) {
         this.cache.value = weathers
+    }
+
+    fun setLongForecastWeatherData(forecastWeathers: HashMap<String, MutableList<WeatherUiModel>>) {
+        this.longForecastCache.value = forecastWeathers
     }
 
     /**
@@ -234,6 +284,16 @@ object WeatherRepository {
         )
     }
 
+    fun transform(data: Data): WeatherUiModel {
+        return WeatherUiModel(
+            data.weather.description,
+            data.temp,
+            data.low_temp,
+            data.max_temp,
+            data.moonrise_ts,
+            data.weather.icon
+        )
+    }
 
     fun getCurrentWeather(query: String): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
         currentWeatherRetrofitService.getCurrentWeather(query)

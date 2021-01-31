@@ -8,32 +8,24 @@
     android:id="@+id/weather_forecast_list_container"
     android:background="@drawable/rounded_background"
     android:alpha="0.7">
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/weather_forecast_item_height"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_margin="@dimen/margin_small"-->
-<!--        android:id="@+id/weather_forecast_list_container"-->
-<!--        android:background="@drawable/rounded_background">-->
-
         <TextView
             android:id="@+id/weather_forecast_date"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="@style/TextSubtitle"
+            style="@style/AdapterItemTitle"
             android:gravity="start|center"
             android:text="tomorrow"
             android:layout_marginStart="@dimen/margin_medium"
-            android:layout_weight="1"
+            android:layout_weight="2"
             />
         <ImageView
             android:id="@+id/weather_forecast_condition_icon"
             android:layout_margin="@dimen/margin_small"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/weather_forecast_icon_height"
             android:layout_height="@dimen/weather_forecast_icon_height"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
+            android:layout_weight="1"
 
             android:src="@mipmap/ic_launcher"/>
 
@@ -41,11 +33,11 @@
             android:id="@+id/weather_forecast_temp_range"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="@style/TextSubtitle"
+            style="@style/AdapterItemTitle"
             android:gravity="start|center"
-            android:text="25 / 13"
+            android:text=" -- / --"
             android:layout_marginStart="@dimen/margin_medium"
-            android:layout_weight="1"
+            android:layout_weight="2"
             />
 <!--    </LinearLayout>-->
 </LinearLayout>

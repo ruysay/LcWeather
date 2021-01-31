@@ -2,6 +2,7 @@ package com.lc.weather.ui
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
@@ -12,8 +13,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -81,13 +81,24 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         listView = view.findViewById<ListView>(R.id.weather_3days_forecast)
         listView.adapter = adapter
 
-
         weather_layout_background.setImageResource(when(city) {
             "Sydney" -> {R.drawable.photo_sydney}
             "Perth" -> {R.drawable.photo_perth}
             "Hobart" -> {R.drawable.photo_hobart}
             else -> R.drawable.photo_home
         })
+
+        weather_long_forecast_button.setOnClickListener {
+            val intent = Intent(activity, LongForecastActivity::class.java)
+            val cityAddress = geocoder.getFromLocationName(city, 1)
+            Timber.d("city: $cityAddress")
+            cityAddress?.get(0)?.let {
+                val latLng = LatLng(it.latitude, it.longitude)
+                intent.putExtra("latLng", latLng)
+            }
+            intent.putExtra("city", city)
+            activity?.startActivity(intent)
+        }
 
         mainViewModel.getLoadState().observe(viewLifecycleOwner, Observer { loadState ->
             when (loadState) {
@@ -96,6 +107,7 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
                 }
                 LoadStates.SUCCESS -> {
                     main_progress_bar.visibility = GONE
+                    weather_long_forecast_button.visibility = VISIBLE
                 }
                 LoadStates.ERROR -> {
                     main_progress_bar.visibility = GONE

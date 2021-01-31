@@ -50,21 +50,34 @@
         android:text="--"
         android:layout_marginTop="@dimen/margin_large"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/weather_temp_range"/>
+        app:layout_constraintTop_toBottomOf="@id/weather_temp_range"
+        />
 
     <ListView
         android:id="@+id/weather_3days_forecast"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_xlarge"
         app:layout_constraintTop_toBottomOf="@id/weather_condition"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/weather_long_forecast_button"
         tools:listitem="@layout/view_holder_weather_forecast_list"
         android:divider="@android:color/transparent"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
         android:padding="@dimen/margin_medium"
         android:dividerHeight="@dimen/margin_medium"/>
+
+    <Button
+        android:id="@+id/weather_long_forecast_button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/weather_forecast_icon_height"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="@string/long_forecast"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:alpha="0.7"
+        android:visibility="invisible"/>
 
     <ProgressBar
         android:id="@+id/main_progress_bar"

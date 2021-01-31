@@ -10,4 +10,5 @@
     <string name="msg_load_complete">Load Data Complete</string>
     <string name="msg_load_failed">Load Data Failed</string>
     <string name="msg_load_empty_result">Empty Data List</string>
+    <string name="long_forecast">15 Days >></string>
 </resources>

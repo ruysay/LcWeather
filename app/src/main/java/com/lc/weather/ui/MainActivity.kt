@@ -2,11 +2,9 @@ package com.lc.weather.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lc.weather.R
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,13 +30,9 @@ class MainActivity : AppCompatActivity() {
         cities.add("Sydney")
         cities.add("Perth")
         cities.add("Hobart")
-
         adapter.setCities(cities)
-
-//        mainViewModel.getWeather("melbourne,au").observe(this, Observer {
-//            Timber.d("checkWeather observed: ${it["melbourne,au"]?.size}")
-//        })
     }
+
     private fun setViewModels() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.init(this)

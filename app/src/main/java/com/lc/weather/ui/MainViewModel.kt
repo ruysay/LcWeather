@@ -27,4 +27,11 @@ class MainViewModel : ViewModel() {
         return repository.getLoadState()
     }
 
+    fun getLongDurationForecast(city: String, latLng: LatLng): LiveData<HashMap<String, MutableList<WeatherUiModel>>> {
+        return repository.getLongDurationForecast(city, latLng)
+    }
+
+//    fun getLatLng(city: String): LatLng {
+//        return repository.getLatLng()
+//    }
 }

@@ -41,7 +41,7 @@ class LongForecastActivity : AppCompatActivity() {
         longForecastViewModel.getLongDurationForecast(city, latLng).observe(this, Observer { result ->
             //update recycler view
             result[city]?.toMutableList()?.let { list ->
-                adapter.setList(list)
+                adapter.setList(list.subList(1,16))
                 adapter.notifyDataSetChanged()
             }
             //TODO use DiffUtil to update only what is changed

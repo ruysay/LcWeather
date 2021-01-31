@@ -29,5 +29,4 @@ class LongForecastViewModel : ViewModel() {
             latLng
         )
     }
-
 }

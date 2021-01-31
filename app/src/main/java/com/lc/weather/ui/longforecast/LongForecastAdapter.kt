@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class LongForecastAdapter() :
-    RecyclerView.Adapter<LongForecastAdapter.CarViewHolder>() {
+    RecyclerView.Adapter<LongForecastAdapter.WeatherViewHolder>() {
 
     private var weathers: MutableList<WeatherUiModel> = mutableListOf()
 
@@ -27,8 +27,8 @@ class LongForecastAdapter() :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarViewHolder {
-        return CarViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
+        return WeatherViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.view_holder_weather_forecast_list,
                 parent,
@@ -41,12 +41,11 @@ class LongForecastAdapter() :
         return weathers.size
     }
 
-    override fun onBindViewHolder(holder: CarViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         holder.onBind(position, weathers)
     }
 
-
-    class CarViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class WeatherViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         private val container: LinearLayout = view.findViewById(R.id.weather_forecast_list_container)
         private val date: TextView = view.findViewById(R.id.weather_forecast_date)
         private val tempRange: TextView = view.findViewById(R.id.weather_forecast_temp_range)

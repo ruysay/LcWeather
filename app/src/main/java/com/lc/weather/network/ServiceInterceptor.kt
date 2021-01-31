@@ -12,7 +12,6 @@ class ServiceInterceptor : Interceptor {
         val originalRequest = chain.request()
         val newRequestBuilder = originalRequest.newBuilder()
 
-
         return chain.proceed(newRequestBuilder.build())
     }
 }

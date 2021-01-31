@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.lc.carview.FileReader
 import com.lc.weather.models.WeatherUiModel
 import com.lc.weather.network.CurrentWeatherRetrofitService
-import com.lc.weather.network.RetrofitBuilder
 import com.lc.weather.ui.main.MainViewModel
 import com.lc.weather.ui.WeatherRepository
 import com.lc.weather.enums.LoadStates

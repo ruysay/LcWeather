@@ -1,4 +1,4 @@
-package com.lc.weather.ui
+package com.lc.weather.ui.longforecast
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

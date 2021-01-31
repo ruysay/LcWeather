@@ -1,4 +1,4 @@
-package com.lc.weather.ui
+package com.lc.weather.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +17,10 @@ class MainActivity : AppCompatActivity() {
         setViewModels()
 
         // Setup ViewPagerAdapter
-        adapter = MainActivityPagerAdapter(supportFragmentManager)
+        adapter =
+            MainActivityPagerAdapter(
+                supportFragmentManager
+            )
         main_view_pager.adapter = adapter
         main_video_control.setupWithViewPager(main_view_pager)
     }

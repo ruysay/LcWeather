@@ -256,7 +256,7 @@ object WeatherRepository {
     /**
      * Checks if the activity is still active, and run the state changes in the UI thread.
      */
-    private fun setLoadState(loadState: LoadStates) {
+    fun setLoadState(loadState: LoadStates) {
         activity?.runOnUiThread {
             this.loadState.value = loadState
         }

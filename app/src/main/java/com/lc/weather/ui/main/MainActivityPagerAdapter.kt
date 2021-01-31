@@ -1,9 +1,10 @@
-package com.lc.weather.ui
+package com.lc.weather.ui.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.lc.weather.ui.longforecast.LocationWeatherFragment
 
 class MainActivityPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -30,10 +31,18 @@ class MainActivityPagerAdapter(fm: FragmentManager) :
         cities.forEachIndexed{ index, city ->
             when(index) {
                 0 -> {
-                    fragments.add(LocationWeatherFragment(null))
+                    fragments.add(
+                        LocationWeatherFragment(
+                            null
+                        )
+                    )
                 }
                 else -> {
-                    fragments.add(LocationWeatherFragment(city))
+                    fragments.add(
+                        LocationWeatherFragment(
+                            city
+                        )
+                    )
                 }
             }
         }

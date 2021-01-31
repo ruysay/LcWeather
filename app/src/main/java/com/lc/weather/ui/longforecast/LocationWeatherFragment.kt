@@ -1,15 +1,13 @@
-package com.lc.weather.ui
+package com.lc.weather.ui.longforecast
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,26 +19,22 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYouListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.lc.weather.BuildConfig
-import com.lc.weather.LcWeatherApplication
 import com.lc.weather.R
 import com.lc.weather.enums.LoadStates
 import com.lc.weather.models.WeatherUiModel
+import com.lc.weather.ui.main.MainActivity
+import com.lc.weather.ui.main.MainViewModel
 import com.lc.weather.utils.ConditionIconUtil
 import kotlinx.android.synthetic.main.fragment_weather.*
 import timber.log.Timber
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LocationWeatherFragment(private var city: String? = null) : Fragment(),
-    LocationListener {
+class LocationWeatherFragment(private var city: String? = null) : Fragment(), LocationListener {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -50,7 +44,6 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var listView: ListView
-
     private lateinit var adapter: ForecastAdapter
 
     // Location info
@@ -69,7 +62,11 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         mainViewModel = ViewModelProvider(mainActivity).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
@@ -77,28 +74,14 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         geocoder = Geocoder(context, Locale.getDefault())
 
-        adapter = ForecastAdapter(view.context)
+        adapter =
+            ForecastAdapter(
+                view.context
+            )
         listView = view.findViewById<ListView>(R.id.weather_3days_forecast)
         listView.adapter = adapter
 
-        weather_layout_background.setImageResource(when(city) {
-            "Sydney" -> {R.drawable.photo_sydney}
-            "Perth" -> {R.drawable.photo_perth}
-            "Hobart" -> {R.drawable.photo_hobart}
-            else -> R.drawable.photo_home
-        })
-
-        weather_long_forecast_button.setOnClickListener {
-            val intent = Intent(activity, LongForecastActivity::class.java)
-            val cityAddress = geocoder.getFromLocationName(city, 1)
-            Timber.d("city: $cityAddress")
-            cityAddress?.get(0)?.let {
-                val latLng = LatLng(it.latitude, it.longitude)
-                intent.putExtra("latLng", latLng)
-            }
-            intent.putExtra("city", city)
-            activity?.startActivity(intent)
-        }
+        setUI()
 
         mainViewModel.getLoadState().observe(viewLifecycleOwner, Observer { loadState ->
             when (loadState) {
@@ -111,30 +94,36 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
                 }
                 LoadStates.ERROR -> {
                     main_progress_bar.visibility = GONE
-                    Toast.makeText(context, R.string.msg_load_failed , Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.msg_load_failed, Toast.LENGTH_LONG).show()
                 }
                 LoadStates.EMPTY -> {
                     main_progress_bar.visibility = GONE
-                    Toast.makeText(context, R.string.msg_load_empty_result , Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.msg_load_empty_result, Toast.LENGTH_LONG)
+                        .show()
 
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
 
-        mainViewModel.getWeatherList().observe(viewLifecycleOwner, Observer {result ->
-            Timber.d("checkWeather getWeatherList $city: ${result[city]?.size}")
+        mainViewModel.getWeatherList().observe(viewLifecycleOwner, Observer { result ->
             activity?.runOnUiThread {
                 main_progress_bar.visibility = GONE
                 result[city]?.toMutableList()?.let { list ->
                     list[0].let { weather ->
-                        weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
+                        weather_temp_range.text = getString(
+                            R.string.temp_range,
+                            weather.tempMax?.toInt(),
+                            weather.tempMin?.toInt()
+                        )
                         weather_condition.text = weather.condition
-                        weather_current_temp.text = getString(R.string.temp_now, weather.temp?.toInt())
+                        weather_current_temp.text =
+                            getString(R.string.temp_now, weather.temp?.toInt())
                     }
 
-                    if(list.size > 4) {
-                        adapter.setList(list.subList(1,4))
+                    if (list.size > 4) {
+                        adapter.setList(list.subList(1, 4))
                     }
                 }
                 weather_location_name.text = city
@@ -157,8 +146,8 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        Timber.d("onResume: $city")
         val context = this.context ?: return
+
         if (!haveSetUI && city == null) {
             haveSetUI = true
             if (ContextCompat.checkSelfPermission(
@@ -175,9 +164,45 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
                 checkLastKnownLocation()
             }
         }
-        if(city!= null) mainViewModel.getWeather(city!!)
+        if (city != null) mainViewModel.getWeather(city!!)
     }
 
+    private fun setUI() {
+        // set background photo based on city name
+        weather_layout_background.setImageResource(
+            when (city) {
+                "Sydney" -> {
+                    R.drawable.photo_sydney
+                }
+                "Perth" -> {
+                    R.drawable.photo_perth
+                }
+                "Hobart" -> {
+                    R.drawable.photo_hobart
+                }
+                else -> R.drawable.photo_home
+            }
+        )
+
+        // set long forecast action
+        weather_long_forecast_button.setOnClickListener {
+            val intent = Intent(activity, LongForecastActivity::class.java)
+            val cityAddress = geocoder.getFromLocationName(city, 1)
+            cityAddress?.get(0)?.let {
+                if (it.hasLatitude() && it.hasLongitude()) {
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    intent.putExtra("latLng", latLng)
+                    intent.putExtra("city", city)
+                    activity?.startActivity(intent)
+                } else {
+                    Toast.makeText(activity, "Not able to handle the request", Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        }
+    }
+
+    // request permission to get current location
     private fun showPermissionDialog(context: Context) {
         val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         dialog.setTitle(R.string.location_permission_alert_title)
@@ -189,7 +214,8 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
             )
         }
         dialog.setNegativeButton(R.string.common_cancel) { _, _ ->
-            Toast.makeText(context, R.string.location_permission_alert_message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.location_permission_alert_message, Toast.LENGTH_LONG)
+                .show()
             showPermissionDialog(context)
         }
         dialog.show()
@@ -197,9 +223,6 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
     private fun checkLastKnownLocation() {
         val context = this.context ?: return
-
-//        TransitionManager.beginDelayedTransition(search_location_container)
-//        explore_location_map.visibility = View.VISIBLE
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -228,7 +251,6 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
                                 lastLocation = locationManager.getLastKnownLocation(
                                     LocationManager.GPS_PROVIDER
                                 )
-                                Timber.d("lastLocation from GPS: ${lastLocation?.latitude}, ${lastLocation?.longitude}")
                             }
                         }
 
@@ -237,22 +259,21 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
                                 //requestLocationUpdates
                                 locationManager.requestLocationUpdates(
                                     LocationManager.NETWORK_PROVIDER,
-                                    MIN_TIME_FOR_UPDATE, MIN_DISTANCE_CHANGE_FOR_UPDATE, this
+                                    MIN_TIME_FOR_UPDATE,
+                                    MIN_DISTANCE_CHANGE_FOR_UPDATE, this
                                 )
                             }
                             // use locationManager's last known location
                             lastLocation =
                                 locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                            Timber.d("lastLocation from NETWORK: ${lastLocation?.latitude}, ${lastLocation?.longitude}")
                         }
                     }
                     if (lastLocation != null) {
-                        Timber.d("checkWeather got last known location: ${lastLocation.latitude}, ${lastLocation.longitude}")
                         updateLocation(LatLng(lastLocation.latitude, lastLocation.longitude))
                     } else {
                         Timber.d("checkWeather last known location not found")
-
-                        updateLocation(LatLng(-37.81, 144.96))
+                        // use default location
+                        updateLocation(LatLng(-37.7251, 144.938))
                     }
 
                 } else {
@@ -265,16 +286,14 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         }
     }
 
-    class ForecastAdapter(private val context: Context) : BaseAdapter() {
+    // Adapter for simple list view to present following 3 days weather summary
+    class ForecastAdapter(context: Context) : BaseAdapter() {
 
-        private val inflater: LayoutInflater
-                = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        private val inflater: LayoutInflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         private var dataSource: MutableList<WeatherUiModel> = mutableListOf()
-
         private val simpleDateFormat = SimpleDateFormat("EEEE, d MMM", Locale.getDefault())
-
-//        private val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
 
         override fun getCount(): Int {
             return dataSource.size
@@ -299,8 +318,10 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
 
             if (convertView == null) {
                 view = inflater.inflate(R.layout.view_holder_weather_forecast_list, parent, false)
-                holder = ViewHolder()
-                holder.conditionIcon = view.findViewById(R.id.weather_forecast_condition_icon) as ImageView
+                holder =
+                    ViewHolder()
+                holder.conditionIcon =
+                    view.findViewById(R.id.weather_forecast_condition_icon) as ImageView
                 holder.date = view.findViewById(R.id.weather_forecast_date) as TextView
                 holder.tempRange = view.findViewById(R.id.weather_forecast_temp_range) as TextView
                 view.tag = holder
@@ -316,39 +337,15 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
             val weatherData = getItem(position) as WeatherUiModel
 
             weatherData.time?.let {
-                dateTxt.text = simpleDateFormat.format(Date(it.toLong()*1000))
+                dateTxt.text = simpleDateFormat.format(Date(it.toLong() * 1000))
             }
 
-            tempRangeTxt.text = view.context.getString(R.string.temp_range, weatherData.tempMax?.toInt(), weatherData.tempMin?.toInt() )
-
-//            val imgUrl = Uri.parse("http://openweathermap.org/img/w/${weatherData.icon}.png")
-//            val imgUrl = Uri.parse("https://upload.wikimedia.org/wikipedia/commons/b/bd/Test.svg")
-
-            val imgUrl = Uri.parse("android.resource://${LcWeatherApplication.getContext().packageName}/drawable/ic_unavailable")
-
+            tempRangeTxt.text = view.context.getString(
+                R.string.temp_range,
+                weatherData.tempMax?.toInt(),
+                weatherData.tempMin?.toInt()
+            )
             conditionIcon.setImageResource(ConditionIconUtil.getDrawable(weatherData.icon!!))
-//            Timber.d("checkImg: $imgUrl")
-//            val imgUrl = ConditionIconUtil.getDrawable(weatherData.icon!!)
-
-//            LcWeatherApplication.picassoWithCache?.load(R.drawable.a01n_svg)?.placeholder(R.drawable.progress_animation)?.fit()?.into(conditionIcon)
-
-//            Glide.with(view.context).load(R.drawable.a01n_svg).apply(requestOptions).placeholder(R.drawable.progress_animation).into(conditionIcon)
-
-//            GlideToVectorYou
-//                .init()
-//                .with(view.context)
-//                .withListener(object: GlideToVectorYouListener {
-//                    override fun onLoadFailed() {
-////                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                    }
-//
-//                    override fun onResourceReady() {
-////                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                    }
-//                })
-//                .setPlaceHolder(R.drawable.progress_animation, R.drawable.ic_launcher_background)
-//                .load(imgUrl, conditionIcon);
-
             return view
         }
 
@@ -363,24 +360,10 @@ class LocationWeatherFragment(private var city: String? = null) : Fragment(),
         myLocation = latLng
         val locationInfo = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
         locationInfo?.let {
-            if(it.size > 0) {
+            if (it.size > 0) {
                 val city = "${it[0].locality},${it[0].countryName}"
-                Timber.d("checkWeather - updateLocation: let's get weather with latlng: $city")
                 this.city = city
                 mainViewModel.getWeather(city)
-//                mainViewModel.getWeather(city).observe(viewLifecycleOwner, Observer { result ->
-//                    Timber.d("checkWeather observed: ${result[city]?.size}")
-//
-//                    result[city]?.toMutableList()?.let { list ->
-//                        if(list.size > 4) {
-//                            adapter.setList(list.subList(1,4))
-//                            list[0].let { weather ->
-//                                weather_temp_range.text = getString(R.string.temp_range, weather.tempMax?.toInt(), weather.tempMin?.toInt())
-//                                weather_condition.text = weather.condition
-//                            }
-//                        }
-//                    }
-//                })
             }
         }
     }

@@ -2,7 +2,7 @@
 
 # LcWeather Native Android App
 
-The app is a simple weather forecast app, which applied MVVM pattern and integrateds open weather APIs to fetch current weather and 3 and 15 days forecast data from the [OpenWeatherMap](https://openweathermap.org/api). Also,  Google APIs are also used to fetch places, cities, counties, coords etc. from [Google Map & Place API](https://developers.google.com/places/android-sdk/overview)). 
+The project is a tempalte Android project which aims at providing real time weather status as well as 3 days and 15 days weather forcast in major cities in Australia, which applied MVVM pattern and integrateds open weather APIs to fetch current weather from the [OpenWeatherMap](https://openweathermap.org/api). Also,  Google APIs are also used to fetch places, cities, counties, coords etc. from [Google Map & Place API](https://developers.google.com/places/android-sdk/overview)). 
 
 The main goal of this app is to be a sample of how to build an high quality Android application that uses the Architecture components, Dagger etc. in Kotlin.
 
@@ -12,7 +12,7 @@ The main goal of this app is to be a sample of how to build an high quality Andr
 
 ### 2. Switch to the following 3 cities by swiping the screen to left or right. Sydney, Perth, and Hobart.
 
-### 3. Display weather information for the next 15 days within one view(optional).
+### 3. Display weather information for the next 15 days within one view.
 
                                                       
    

@@ -2,11 +2,11 @@
 
 # LcWeather Native Android App
 
-The app is a simple weather forecast app, which uses some APIs to fetch current weather and 3 and 15 days forecast data from the [OpenWeatherMap](https://openweathermap.org/api),  and to fetch places, cities, counties, coords etc. from [Google Map & Place API](https://developers.google.com/places/android-sdk/overview)). 
+The app is a simple weather forecast app, which applied MVVM pattern and integrateds open weather APIs to fetch current weather and 3 and 15 days forecast data from the [OpenWeatherMap](https://openweathermap.org/api). Also,  Google APIs are also used to fetch places, cities, counties, coords etc. from [Google Map & Place API](https://developers.google.com/places/android-sdk/overview)). 
 
 The main goal of this app is to be a sample of how to build an high quality Android application that uses the Architecture components, Dagger etc. in Kotlin.
 
-# Requirements
+# Features
 
 ### 1. Display the name of your city with its current temperature, weather condition, highest/lowest temperature, as well as the weather forecast for the upcoming 3 days.
 
